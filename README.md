@@ -22,3 +22,10 @@ The library provides a small, dependency-free Base32 codec for situations where 
 - **No padding.** The decoder recovers the original length from the character count, so `=` padding is never produced or expected. Output from other Base32 implementations that includes padding will be rejected.
 - **Case-insensitive.** Lowercase input is accepted and treated identically to uppercase. Output is always uppercase.
 - **Strict alphabet.** Only `A–Z` and `2–7` are valid. Characters like `0`, `1`, `8`, `9`, and `=` are rejected with an error rather than silently dropped, so malformed input is visible.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
